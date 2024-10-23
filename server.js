@@ -1,5 +1,8 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import posts from './routes/posts.js';
+import { fileURLToPath } from 'url'; // ES6
+
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -7,6 +10,8 @@ const app = express();
 // ----------- STATIC FOLDER AND STATIC FILES SETUP
 
 // setup static folder
+const __filename = fileURLToPath(import.meta.url); // ES6
+const __dirname = path.dirname(__filename); // ES6
 app.use(express.static(path.join(__dirname, 'public')));
 
 // although the code below is commented, the '/'  route is still being handled by express.static, opening the index.html
@@ -22,23 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     res.sendFile(path.join(__dirname, 'public', 'about.html'));
 // });
 
-let posts = [
-    { id: 1, title: 'post 1' },
-    { id: 2, title: 'post 2' },
-    { id: 3, title: 'post 3' }
-];
 
-// get all posts
-app.get('/api/posts', (req, res) =>
-{
-    res.json(posts);
-});
+// -------- ROUTES
+app.use('/api/posts', posts); // correct way to use the routes module (instead of app.get(...), it's using router.ger(...). don't forget to add 'module.exports = router' at the end of the router)
 
-// get single post
-app.get('/api/posts/:id', (req, res) =>
-{
-    const id = parseInt(req.params.id);
-    res.json(posts.filter((post) => post.id === id));
-});
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
