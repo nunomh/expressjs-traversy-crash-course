@@ -1,11 +1,21 @@
 import express from 'express';
 import path from 'path';
 import posts from './routes/posts.js';
+import logger from './middleware/logger.js';
 import { fileURLToPath } from 'url'; // ES6
 
 const port = process.env.PORT || 8000;
 
 const app = express();
+
+// Body parser middleware (to receive JSON data)
+app.use(express.json());
+app.use(express.urlencoded({ extended: false })); // to parse URL encoded data
+
+// Logger middleware
+app.use(logger);  // this will call the logger function to all incoming requests
+
+
 
 // ----------- STATIC FOLDER AND STATIC FILES SETUP
 

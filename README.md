@@ -15,6 +15,7 @@ Start dev: `npm run dev` (already includes --watch for auto-reload)
 
 - public : static files
 - routes : express routes
+- middleware : middleware functions
 
 ## .env
 
