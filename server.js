@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import posts from './routes/posts.js';
 import logger from './middleware/logger.js';
+import errorHandler from './middleware/error.js';
+import notFound from './middleware/notFound.js';
 import { fileURLToPath } from 'url'; // ES6
 
 const port = process.env.PORT || 8000;
@@ -41,5 +43,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // -------- ROUTES
 app.use('/api/posts', posts); // correct way to use the routes module (instead of app.get(...), it's using router.ger(...). don't forget to add 'module.exports = router' at the end of the router)
 
+// Error handling middleware to all unrecognized routes
+app.use(notFound);
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
